@@ -20,6 +20,15 @@ APlayerCharacter::APlayerCharacter()
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f));
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
+
+	//Creates a Mesh Component that 1st Person only sees
+	Mesh1P = CreateAbstractDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh 1P"));
+	Mesh1P->SetOnlyOwnerSee(true);
+	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
+	Mesh1P->bCastDynamicShadow = false;
+	Mesh1P->CastShadow = false;
+	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
+	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 	//Player Init
 	
 }
@@ -244,6 +253,18 @@ void APlayerCharacter::PlayerVelocity()
 		bIsMoving = false;
 	}
 }
+
+void APlayerCharacter::SetHasWeapon(bool bNewHasWeapon)
+{
+	bHasWeapon = bNewHasWeapon;
+}
+
+bool APlayerCharacter::GetHasWeapon()
+{
+	return bHasWeapon;
+}
+
+
 
 
 // Called every frame

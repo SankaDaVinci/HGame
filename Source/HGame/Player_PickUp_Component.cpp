@@ -13,11 +13,13 @@ void UPlayer_PickUp_Component::BeginPlay()
 {
 	Super::BeginPlay();
 
+	OnComponentBeginOverlap.AddDynamic(this, &UPlayer_PickUp_Component::OnSphereBeginOverlap);
 }
 
 void UPlayer_PickUp_Component::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	APlayerCharacter* PChar = Cast<APlayerCharacter>(OtherActor);
+	
 
 	if (PChar != nullptr)
 	{

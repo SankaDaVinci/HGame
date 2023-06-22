@@ -17,10 +17,22 @@ class HGAME_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	USkeletalMeshComponent* Mesh1P;
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+		bool bHasWeapon;
+
+	UFUNCTION(BlueprintCallable, Category = "Player Action")
+		void SetHasWeapon(bool bNewHasWeapon);
+
+	UFUNCTION(BlueprintCallable, Category = "Player Action")
+		bool GetHasWeapon();
+
+	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 
 protected:
 	// Called when the game starts or when spawned
@@ -81,6 +93,8 @@ protected:
 	UFUNCTION()
 	void PlayerVelocity();
 
+	
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Settings|Settings|Stamina")
@@ -134,6 +148,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Player Action")
 	bool bIsSprinting;
 
+	
+
+	
 
 	
 public:	
