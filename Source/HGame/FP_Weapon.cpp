@@ -2,6 +2,7 @@
 
 
 #include "FP_Weapon.h"
+#include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
 #include "MagicProjectile.h"
 #include "PlayerCharacter.h"
@@ -13,6 +14,8 @@
 UFP_Weapon::UFP_Weapon()
 {
 	WandTipOffset = FVector(0.f, 0.f, 0.f);
+
+	bCanFire = true;
 }
 
 void UFP_Weapon::AttachWandToPlayer(APlayerCharacter* TargetCharacter)
@@ -28,6 +31,7 @@ void UFP_Weapon::AttachWandToPlayer(APlayerCharacter* TargetCharacter)
 
 	FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, true);
 	AttachToComponent(Character->GetMesh1P(), AttachmentRules, FName(TEXT("GripPoint")));
+	
 
 
 
@@ -53,7 +57,7 @@ void UFP_Weapon::AttachWandToPlayer(APlayerCharacter* TargetCharacter)
 void UFP_Weapon::Fire()
 {
 	
-	if (Character == nullptr || Character->GetController() == nullptr)
+	if (Character == nullptr || Character->GetController() == nullptr || bCanFire == false)
 	{
 		return;
 	}
@@ -71,8 +75,10 @@ void UFP_Weapon::Fire()
 
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+			ActorSpawnParams.Owner = Character;
 
 			World->SpawnActor<AMagicProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			
 
 		}
 	}
@@ -92,14 +98,15 @@ void UFP_Weapon::Fire()
 		}
 
 	}
-
+	GetWorld()->GetTimerManager().SetTimer(FireCoolDown, this, &UFP_Weapon::FireRateFire, FireRate, false);
+	bCanFire = false;
 
 
 }
 
 void UFP_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	/*if (Character == nullptr)
+	if (Character == nullptr)
 	{
 		return;
 	}
@@ -110,5 +117,10 @@ void UFP_Weapon::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		{
 			Subsystem->RemoveMappingContext(FireMappingContext);
 		}
-	}*/
+	}
+}
+
+void UFP_Weapon::FireRateFire()
+{
+	bCanFire = true;
 }

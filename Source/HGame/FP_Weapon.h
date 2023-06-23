@@ -36,6 +36,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
 		class UInputAction* FireAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input", meta = (AllowPrivateAccess = "true"))
+		float FireRate = 0.1f;
+	
+	
+
 	UFP_Weapon();
 
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
@@ -50,6 +55,16 @@ protected:
 	UFUNCTION()
 		virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+	FTimerHandle FireCoolDown;
+
+	UFUNCTION()
+		void FireRateFire();
+
+	UPROPERTY()
+		bool bHoldToFireEvent
+		;
+	UPROPERTY()
+		bool bCanFire;
 private:
 	APlayerCharacter* Character;
 };
