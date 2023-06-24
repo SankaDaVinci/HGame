@@ -6,7 +6,10 @@
 #include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
+#include "StructHero.h"
 #include "PlayerCharacter.generated.h"
+
+
 
 class UInputMappingContext;
 class UInputAction;
@@ -33,6 +36,39 @@ public:
 		bool GetHasWeapon();
 
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Actor Settings|Settings|Health")
+		float fCHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Settings|Settings|Health")
+		float fMaxHealth;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Settings|Settings|Mana")
+		float fCMana;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Actor Settings|Settings|Mana")
+		float fMMana;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Status")
+		int Level;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fDefense;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fAttackPower;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fSpeedMultiplier;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fManaStrength;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fManaMultiplier;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Hero|Status")
+		float fDmgReduce;
 
 protected:
 	// Called when the game starts or when spawned
@@ -72,8 +108,6 @@ protected:
 
 	void Sprinting(const FInputActionValue& Value);
 
-	UFUNCTION(Category = "PlayerInit")
-	void PlayerSetup();
 
 	UFUNCTION(Category = "PlayerSettings")
 	void StaminaGain();
@@ -85,13 +119,17 @@ protected:
 	void StaminaRechargeStartDelay();
 
 	UFUNCTION(Category = "PlayerMovement")
-		void SprintStart();
+	void SprintStart();
 
 	UFUNCTION(Category = "PlayerMovement")
-		void SprintEnd();
+	void SprintEnd();
 
 	UFUNCTION()
 	void PlayerVelocity();
+
+	UFUNCTION(BlueprintCallable = "Player Setup")
+	void InitializeCharacter(FStructHero HeroSetup);
+
 
 	
 

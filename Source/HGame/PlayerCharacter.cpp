@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PlayerCharacter.h"
+#include "StructHero.h"
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "EnhancedInputComponent.h"
@@ -49,7 +50,7 @@ void APlayerCharacter::BeginPlay()
 		}
 	}
 	
-	PlayerSetup();
+
 
 }
 
@@ -127,12 +128,7 @@ void APlayerCharacter::Sprinting(const FInputActionValue& Value)
 
 }
 
-void APlayerCharacter::PlayerSetup()
-{
-	GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
-	CurrentStamina = MaxStamina;
-	UE_LOG(LogTemp, Warning, TEXT("Player Initialized"));
-}
+
 
 //Stamina Gain function adds Stamina to the character
 void APlayerCharacter::StaminaGain()
@@ -253,6 +249,20 @@ void APlayerCharacter::PlayerVelocity()
 		bIsMoving = false;
 	}
 }
+
+void APlayerCharacter::InitializeCharacter(FStructHero HeroSetup)
+{
+	
+	fMaxHealth = HeroSetup.fMaxHealth;
+	fMMana = HeroSetup.fMaxMana;
+	MaxStamina = HeroSetup.fMaxStamina;
+	StaminaConsumption = HeroSetup.fStaminaConsumption;
+
+	fCHealth = fMaxHealth;
+	CurrentStamina = MaxStamina;
+
+}
+
 
 void APlayerCharacter::SetHasWeapon(bool bNewHasWeapon)
 {
